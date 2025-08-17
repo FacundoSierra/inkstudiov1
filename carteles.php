@@ -1,6 +1,12 @@
 <?php 
   $title = "Diseño de Marca y Branding | InkStudio";
   $description = "Construye una identidad visual coherente y atractiva con nuestros servicios de branding: carteles, estilo gráfico y personalidad de marca.";
+  require_once('includes/breadcrumbs.php');
+  $faqs = [
+    ['q' => '¿Incluyen carteles dentro del branding?', 'a' => 'Sí, diseñamos piezas clave como carteles y materiales de marca coherentes.'],
+    ['q' => '¿Qué beneficios tiene un manual de marca?', 'a' => 'Mantener consistencia visual en todos los puntos de contacto y facilitar la ejecución.']
+  ];
+  $structuredDataJsonLd = build_faq_schema_jsonld($faqs);
   include('includes/header.php'); 
 ?>
 
@@ -10,6 +16,11 @@
     <p class="lead">Diseñamos carteles, estilos visuales y coherencia para que tu marca sea recordada.</p>
   </div>
 </section>
+
+<?php echo render_breadcrumbs([
+  ['label' => 'Inicio', 'url' => 'index.php'],
+  ['label' => 'Branding']
+]); ?>
 
 <section class="container py-5">
   <div class="text-center mb-5">

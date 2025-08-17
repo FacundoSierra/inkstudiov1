@@ -1,6 +1,14 @@
-<?php
+<?php 
   $title = "Logotipos y Diseño de Marcas | InkStudio";
   $description = "Creamos logotipos únicos y memorables que representan perfectamente tu marca. Diseño de identidad visual profesional y personalizado.";
+  require_once('includes/breadcrumbs.php');
+  $faqs = [
+    ['q' => '¿Cuánto tarda el diseño de un logotipo?', 'a' => 'Normalmente entre 5 y 10 días, según complejidad y rondas de feedback.'],
+    ['q' => '¿Qué entregables recibo?', 'a' => 'Entregamos archivos vectoriales (AI/EPS/SVG) y raster (PNG/JPG) en varias versiones de color.'],
+    ['q' => '¿Puedo pedir cambios?', 'a' => 'Sí, incluimos rondas de revisión para ajustar el diseño hasta lograr el resultado deseado.'],
+    ['q' => '¿Ofrecen manual de marca?', 'a' => 'Podemos incluir un manual básico de uso de marca si lo necesitas.']
+  ];
+  $structuredDataJsonLd = build_faq_schema_jsonld($faqs);
   include('includes/header.php');
 ?>
 
@@ -18,6 +26,11 @@
     </div>
   </div>
 </section>
+
+<?php echo render_breadcrumbs([
+  ['label' => 'Inicio', 'url' => 'index.php'],
+  ['label' => 'Logotipos']
+]); ?>
 
 <!-- Información del Servicio -->
 <section class="container py-5">
@@ -175,7 +188,7 @@
     <div class="col-lg-4 col-md-6">
       <div class="portfolio-item">
         <div class="portfolio-image">
-          <img src="assets/img/imagen-elegante.png" alt="Logo elegante" class="img-fluid">
+          <img src="assets/img/imagen-elegante.png" alt="Logo elegante" class="img-fluid" loading="lazy">
           <div class="portfolio-overlay">
             <div class="portfolio-info">
               <h5>Logo Elegante</h5>
@@ -189,7 +202,7 @@
     <div class="col-lg-4 col-md-6">
       <div class="portfolio-item">
         <div class="portfolio-image">
-          <img src="assets/img/Inky.jpeg" alt="Logo creativo" class="img-fluid">
+          <img src="assets/img/Inky.jpeg" alt="Logo creativo" class="img-fluid" loading="lazy">
           <div class="portfolio-overlay">
             <div class="portfolio-info">
               <h5>Logo Creativo</h5>
@@ -203,7 +216,7 @@
     <div class="col-lg-4 col-md-6">
       <div class="portfolio-item">
         <div class="portfolio-image">
-          <img src="assets/img/Inky.webp" alt="Logo profesional" class="img-fluid">
+          <img src="assets/img/Inky.webp" alt="Logo profesional" class="img-fluid" loading="lazy">
           <div class="portfolio-overlay">
             <div class="portfolio-info">
               <h5>Logo Profesional</h5>
@@ -217,7 +230,8 @@
   
   <div class="text-center mt-5">
     <p class="text-muted mb-3">¿Te gusta lo que ves? ¡Podemos crear algo similar para ti!</p>
-    <a href="contacto.php" class="btn btn-primary btn-lg">Solicita tu logo</a>
+    <a href="contacto.php" class="btn btn-primary btn-lg me-2">Solicita tu logo</a>
+    <a href="diseno-logotipos-madrid.php" class="btn btn-outline-primary btn-lg">Logotipos en Madrid</a>
   </div>
 </section>
 

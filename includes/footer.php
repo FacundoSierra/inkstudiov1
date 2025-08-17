@@ -4,6 +4,8 @@
     <p class="mb-1">&copy; <?php echo date("Y"); ?> InkStudio. Diseño gráfico profesional y accesible.</p>
     <nav>
       <a href="index.php" class="text-decoration-none text-light mx-2">Inicio</a>
+      <a href="sobre-nosotros.php" class="text-decoration-none text-light mx-2">Sobre nosotros</a>
+      <a href="precios.php" class="text-decoration-none text-light mx-2">Precios</a>
       <a href="contacto.php" class="text-decoration-none text-light mx-2">Contacto</a>
     </nav>
   </div>

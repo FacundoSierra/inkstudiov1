@@ -1,12 +1,19 @@
 <?php
-// Incluir configuración de emails
-require_once 'config.php';
+/**
+ * SISTEMA DE EMAILS SIMPLIFICADO - InkStudio
+ * Versión que funciona sin dependencias externas
+ */
 
 // Configuración de seguridad
 header('Content-Type: application/json');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
+
+// Configuración básica de emails
+define('EMAIL_DESTINO', 'inkstudio2123@gmail.com');
+define('NOMBRE_ESTUDIO', 'InkStudio');
+define('EMAIL_REMITENTE', 'inkstudio2123@gmail.com');
 
 // Verificar que sea una petición POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -33,6 +40,11 @@ function isValidPhone($phone) {
     // Acepta formatos: +34 600 000 000, 600 000 000, 600000000
     $phone = preg_replace('/\s+/', '', $phone);
     return preg_match('/^(\+34\s?)?[6789]\d{8}$/', $phone);
+}
+
+// Función para log de errores
+function logEmailError($mensaje, $tipo = 'ERROR') {
+    error_log("[$tipo] EMAIL INKSTUDIO: $mensaje");
 }
 
 try {
@@ -264,7 +276,7 @@ try {
     $email_cliente_enviado = false;
 
     // Email para el estudio
-    if (mail(EMAIL_DESTINO, $asunto, $contenido_html, implode("\r\n", $headers))) {
+    if (function_exists('mail') && mail(EMAIL_DESTINO, $asunto, $contenido_html, implode("\r\n", $headers))) {
         $email_enviado = true;
         logEmailError("Email enviado exitosamente a " . EMAIL_DESTINO, 'SUCCESS');
     } else {
@@ -279,7 +291,7 @@ try {
         'X-Mailer: PHP/' . phpversion()
     ];
 
-    if (mail($email, $asunto_cliente, $contenido_cliente, implode("\r\n", $headers_cliente))) {
+    if (function_exists('mail') && mail($email, $asunto_cliente, $contenido_cliente, implode("\r\n", $headers_cliente))) {
         $email_cliente_enviado = true;
         logEmailError("Email de confirmación enviado exitosamente a " . $email, 'SUCCESS');
     } else {
@@ -321,7 +333,11 @@ try {
         'message' => '¡Solicitud enviada con éxito! Te contactaremos muy pronto.',
         'email_enviado' => $email_enviado,
         'email_cliente_enviado' => $email_cliente_enviado,
-        'config' => getEmailConfig()
+        'config' => [
+            'destino' => EMAIL_DESTINO,
+            'remitente' => EMAIL_REMITENTE,
+            'nombre_estudio' => NOMBRE_ESTUDIO
+        ]
     ]);
 
 } catch (Exception $e) {
@@ -332,7 +348,7 @@ try {
     echo json_encode([
         'success' => false, 
         'message' => 'Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo más tarde.',
-        'debug' => DEBUG_EMAILS ? $e->getMessage() : null
+        'debug' => $e->getMessage()
     ]);
 }
 ?>

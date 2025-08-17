@@ -218,34 +218,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputs = form.querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
         input.addEventListener('blur', validateField);
-        input.addEventListener('input', clearFieldError);
+        input.addEventListener('input', function() {
+            clearFieldError(this);
+        });
     });
     
     // Validación del archivo
     const fileInput = document.getElementById('archivo');
     const fileInfo = document.getElementById('fileInfo');
     
-    fileInput.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const maxSize = 5 * 1024 * 1024; // 5MB
-            if (file.size > maxSize) {
-                showFieldError('archivo', 'El archivo es demasiado grande. Máximo 5MB.');
-                this.value = '';
+    if (fileInput && fileInfo) {
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    showFieldError(this, 'El archivo es demasiado grande. Máximo 5MB.');
+                    this.value = '';
+                    fileInfo.innerHTML = '';
+                    return;
+                }
+                
+                fileInfo.innerHTML = `
+                    <div class="alert alert-success mt-2">
+                        <i class="fas fa-check me-2"></i>
+                        Archivo seleccionado: ${file.name} (${(file.size / 1024).toFixed(2)} KB)
+                    </div>
+                `;
+            } else {
                 fileInfo.innerHTML = '';
-                return;
             }
-            
-            fileInfo.innerHTML = `
-                <div class="alert alert-success mt-2">
-                    <i class="fas fa-check me-2"></i>
-                    Archivo seleccionado: ${file.name} (${(file.size / 1024).toFixed(2)} KB)
-                </div>
-            `;
-        } else {
-            fileInfo.innerHTML = '';
-        }
-    });
+        });
+    }
     
     // Envío del formulario
     form.addEventListener('submit', function(e) {
@@ -300,24 +304,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function clearFieldError(field) {
+        if (!field) return;
+        
         if (typeof field === 'string') {
             field = document.getElementById(field);
         }
-        field.classList.remove('is-invalid');
-        const errorDiv = field.parentNode.querySelector('.invalid-feedback');
-        if (errorDiv) {
-            errorDiv.textContent = '';
+        
+        if (field && field.classList) {
+            field.classList.remove('is-invalid');
+            const errorDiv = field.parentNode ? field.parentNode.querySelector('.invalid-feedback') : null;
+            if (errorDiv) {
+                errorDiv.textContent = '';
+            }
         }
     }
     
     function showFieldError(field, message) {
+        if (!field) return;
+        
         if (typeof field === 'string') {
             field = document.getElementById(field);
         }
-        field.classList.add('is-invalid');
-        const errorDiv = field.parentNode.querySelector('.invalid-feedback');
-        if (errorDiv) {
-            errorDiv.textContent = message;
+        
+        if (field && field.classList) {
+            field.classList.add('is-invalid');
+            const errorDiv = field.parentNode ? field.parentNode.querySelector('.invalid-feedback') : null;
+            if (errorDiv) {
+                errorDiv.textContent = message;
+            }
         }
     }
     
@@ -347,8 +361,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function submitForm() {
         // Cambiar estado del botón
         submitBtn.disabled = true;
-        submitBtn.querySelector('.btn-text').classList.add('d-none');
-        submitBtn.querySelector('.btn-loading').classList.remove('d-none');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
+        
+        if (btnText) btnText.classList.add('d-none');
+        if (btnLoading) btnLoading.classList.remove('d-none');
         
         // Crear FormData
         const formData = new FormData(form);
@@ -358,12 +375,33 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text().then(text => {
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Respuesta del servidor:', text);
+                    throw new Error('Respuesta del servidor no válida');
+                }
+            });
+        })
         .then(data => {
             if (data.success) {
                 showMessage('success', data.message);
+                try {
+                  if (typeof gtag === 'function') {
+                    gtag('event', 'generate_lead', {
+                      'event_category': 'contact',
+                      'event_label': 'contact_form_submit',
+                      'value': 1
+                    });
+                  }
+                } catch (e) { /* no-op */ }
                 form.reset();
-                fileInfo.innerHTML = '';
+                if (fileInfo) fileInfo.innerHTML = '';
                 // Limpiar errores
                 inputs.forEach(input => {
                     input.classList.remove('is-invalid');
@@ -384,12 +422,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .finally(() => {
             // Restaurar botón
             submitBtn.disabled = false;
-            submitBtn.querySelector('.btn-text').classList.remove('d-none');
-            submitBtn.querySelector('.btn-loading').classList.add('d-none');
+            if (btnText) btnText.classList.remove('d-none');
+            if (btnLoading) btnLoading.classList.add('d-none');
         });
     }
     
     function showMessage(type, message) {
+        if (!formMessage) return;
+        
         formMessage.className = `alert alert-${type} mt-4`;
         formMessage.innerHTML = `
             <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
@@ -403,7 +443,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ocultar mensaje después de 5 segundos si es éxito
         if (type === 'success') {
             setTimeout(() => {
-                formMessage.style.display = 'none';
+                if (formMessage) {
+                    formMessage.style.display = 'none';
+                }
             }, 5000);
         }
     }

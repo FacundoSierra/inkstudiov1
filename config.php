@@ -41,19 +41,19 @@ define('STUDIO_ADDRESS', 'Madrid, España');
 // ========================================
 
 // Instagram
-define('SOCIAL_INSTAGRAM', 'https://instagram.com/inkstudio');
+define('SOCIAL_INSTAGRAM', 'https://instagram.com/inkstudio2123');
 
 // Facebook
-define('SOCIAL_FACEBOOK', 'https://facebook.com/inkstudio');
+define('SOCIAL_FACEBOOK', 'https://facebook.com/inkstudio2123');
 
 // Twitter/X
-define('SOCIAL_TWITTER', 'https://twitter.com/inkstudio');
+define('SOCIAL_TWITTER', 'https://twitter.com/inkstudio2123');
 
 // LinkedIn
-define('SOCIAL_LINKEDIN', 'https://linkedin.com/company/inkstudio');
+define('SOCIAL_LINKEDIN', 'https://www.linkedin.com/company/inkstudio2123');
 
 // Behance/Dribbble
-define('SOCIAL_PORTFOLIO', 'https://behance.net/inkstudio');
+define('SOCIAL_PORTFOLIO', 'https://behance.net/inkstudio2123');
 
 // ========================================
 // SERVICIOS PRINCIPALES
@@ -117,7 +117,7 @@ $ALLOWED_FILE_TYPES = [
 // ========================================
 
 // URL del sitio (sin barra final)
-define('SITE_URL', 'https://www.inkstudio.com');
+define('SITE_URL', 'https://inkstudio.es');
 
 // Idioma principal
 define('SITE_LANGUAGE', 'es');
@@ -250,6 +250,9 @@ define('GA_TRACKING_ID', '');
 
 // Facebook Pixel ID (opcional)
 define('FB_PIXEL_ID', '');
+
+// Google Search Console (opcional)
+define('GOOGLE_SITE_VERIFICATION', '');
 
 // ========================================
 // CONFIGURACIÓN DE REDES SOCIALES

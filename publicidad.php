@@ -1,6 +1,12 @@
 <?php 
   $title = "Diseño Publicitario | InkStudio";
   $description = "Diseñamos piezas publicitarias para redes, campañas, productos o promociones. Visuales que impactan y convierten.";
+  require_once('includes/breadcrumbs.php');
+  $faqs = [
+    ['q' => '¿Qué plataformas cubren?', 'a' => 'Creamos creatividades para Instagram, Facebook, TikTok, YouTube, banners y formatos impresos.'],
+    ['q' => '¿Pueden adaptar un mismo diseño a varios tamaños?', 'a' => 'Sí, entregamos los formatos necesarios para cada plataforma.']
+  ];
+  $structuredDataJsonLd = build_faq_schema_jsonld($faqs);
   include('includes/header.php'); 
 ?>
 
@@ -10,6 +16,11 @@
     <p class="lead">Creamos diseños publicitarios que hablan por tu marca.</p>
   </div>
 </section>
+
+<?php echo render_breadcrumbs([
+  ['label' => 'Inicio', 'url' => 'index.php'],
+  ['label' => 'Publicidad']
+]); ?>
 
 <section class="container py-5">
   <div class="text-center mb-5">
@@ -46,6 +57,9 @@
           <li>Material adaptado a formatos digitales o impresos</li>
         </ul>
         <a href="contacto.php" class="btn btn-primary mt-3">Solicita diseño publicitario</a>
+        <div class="mt-3">
+          <a href="diseno-publicitario-redes.php" class="btn btn-outline-primary btn-sm">Publicidad para Redes Sociales</a>
+        </div>
       </div>
     </div>
   </div>

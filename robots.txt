@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Bloquear rutas sensibles (ajusta si existen)
+Disallow: /mail/
+
+Sitemap: https://inkstudio.es/sitemap.xml
+

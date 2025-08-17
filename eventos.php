@@ -1,6 +1,12 @@
 <?php 
   $title = "Diseño para Eventos | InkStudio";
   $description = "Promociona tus eventos con diseño gráfico de alto impacto: carteles, flyers y visuales para redes.";
+  require_once('includes/breadcrumbs.php');
+  $faqs = [
+    ['q' => '¿Con cuánta antelación debo pedir un diseño?', 'a' => 'Recomendamos al menos 7 días antes del evento para poder iterar cómodamente.'],
+    ['q' => '¿Entregan archivos listos para imprenta?', 'a' => 'Sí, con sangrado y resolución adecuada, además de versiones digitales para redes.']
+  ];
+  $structuredDataJsonLd = build_faq_schema_jsonld($faqs);
   include('includes/header.php'); 
 ?>
 
@@ -10,6 +16,11 @@
     <p class="lead">Carteles, flyers y visuales para destacar antes, durante y después del evento.</p>
   </div>
 </section>
+
+<?php echo render_breadcrumbs([
+  ['label' => 'Inicio', 'url' => 'index.php'],
+  ['label' => 'Eventos']
+]); ?>
 
 <section class="container py-5">
   <div class="text-center mb-5">

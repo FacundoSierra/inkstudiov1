@@ -1,6 +1,12 @@
 <?php 
   $title = "Portadas Personalizadas | InkStudio";
   $description = "Diseño de portadas para libros, discos, perfiles y proyectos visuales. Creatividad profesional adaptada a cada estilo.";
+  require_once('includes/breadcrumbs.php');
+  $faqs = [
+    ['q' => '¿Qué formatos de portada entregan?', 'a' => 'Adaptamos la portada a impresión y digital, según plataforma o necesidad.'],
+    ['q' => '¿Puedo aportar referencias?', 'a' => 'Sí, cuantas más referencias compartas, mejor interpretaremos tu estilo.']
+  ];
+  $structuredDataJsonLd = build_faq_schema_jsonld($faqs);
   include('includes/header.php'); 
 ?>
 
@@ -10,6 +16,11 @@
     <p class="lead">Creamos portadas para libros, álbumes y proyectos con impacto visual.</p>
   </div>
 </section>
+
+<?php echo render_breadcrumbs([
+  ['label' => 'Inicio', 'url' => 'index.php'],
+  ['label' => 'Portadas']
+]); ?>
 
 <section class="container py-5">
   <div class="text-center mb-5">
